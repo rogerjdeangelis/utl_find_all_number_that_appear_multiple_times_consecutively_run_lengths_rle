@@ -1,5 +1,9 @@
 Find all numbers that appear multiple times consecutively_run_lengths_rle
 
+
+see elegant solution on end by
+"Keintz, Mark" <mkeintz@WHARTON.UPENN.EDU>
+
   Good Question
 
   Two Solutions
@@ -160,4 +164,72 @@ cards4;
 9 1
 ;;;;
 run;quit;
+
+
+
+see elegant solution on end by
+"Keintz, Mark" <mkeintz@WHARTON.UPENN.EDU>
+
+
+*__  __            _
+|  \/  | __ _ _ __| | __
+| |\/| |/ _` | '__| |/ /
+| |  | | (_| | |  |   <
+|_|  |_|\__,_|_|  |_|\_\
+
+;
+
+Very nice
+
+Not sure why I always complicate solutions.
+
+Run length function?  This is why SAS decreed an _N_ variable,
+and made the queue-based dif function.
+Add the desired filter on runlength.
+
+data have;
+input Id num ;
+cards4;
+1 1
+2 1
+3 1
+4 1
+5 2
+6 2
+7 1
+8 1
+9 1
+;;;;
+run;quit;
+
+
+data want;
+  set have;
+  by num notsorted;
+  if last.num;
+  x=dif(_n_);
+  runlength=coalesce(dif(_n_),_n_);
+  obs=_n_;
+  put _all_;
+run;
+
+
+Here is what is going on
+
+                                             | RULES
+                                             |                dif(_n_) is missing
+ num=1  LAST.num=1  _N_=4  runlength=4 obs=4 | runlength=coalesce(dif(_N_)<.> and _n_=4);
+                                             | obs=_n_; last position of num
+                                             |
+ num=2  LAST.num=1  _N_=6  runlength=2 obs=6 | runlength=coalesce(dif(_N_)<6-4> and _n_=6);
+                                             | obs=6
+                                             |
+ num=1  LAST.num=1  _N_=9  runlength=. obs=. | runlength=coalesce(dif(_N_)<9-6> and _n_=9);
+                                             |            obs=6
+Top of Message | Previous Page | Permalink
+
+
+
+
+
 
